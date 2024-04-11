@@ -1,0 +1,55 @@
+/* Style for form container */
+#custom-contact-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Style for form inputs and labels */
+#custom-contact-form p {
+    margin-bottom: 20px;
+}
+
+#custom-contact-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#custom-contact-form input[type="text"],
+#custom-contact-form input[type="email"],
+#custom-contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#custom-contact-form textarea {
+    height: 100px;
+}
+
+/* Style for form submit button */
+#custom-contact-form input[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+#custom-contact-form input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Error styling for input fields */
+#custom-contact-form .error {
+    border-color: #ff0000;
+}
+
+/* Error message styling (optional) */
+.error-message {
+    color: #ff0000;
+    font-size: 14px;
+    margin-top: 5px;
+}
