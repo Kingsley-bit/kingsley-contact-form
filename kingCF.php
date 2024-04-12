@@ -39,8 +39,8 @@ class CustomContactForm {
     public function Kingcf_initialize_settings(){
         // Register settings
         register_setting(
-            'KIngcf_display_options', // Option group
-            'KIngcf_display_options_options', // Option name
+            'Kingcf_display_options', // Option group
+            'Kingcf_display_options', // Option name
             array($this, 'Kingcf_validate_options') // Sanitization callback
         );
     
@@ -49,7 +49,7 @@ class CustomContactForm {
             'Kingcf_display_main_section', // Section ID
             'Kingcf Settings', // Section title
             array($this, 'Kingcf_main_section_callback'), // Callback for section content
-            'KIngcf_display_options' // Page slug of the options page
+            'Kingcf_display_options' // Page slug of the options page
         );
     
         // Add settings field
@@ -57,7 +57,7 @@ class CustomContactForm {
             'Kingcf_enable', // Field ID
             'Enable Kingcf', // Field title
             array($this, 'Kingcf_enable_callback'), // Callback for field content
-            'KIngcf_display_options', // Page slug of the options page
+            'Kingcf_display_options', // Page slug of the options page
             'Kingcf_display_main_section' // Section ID
         );
     }
@@ -68,8 +68,8 @@ class CustomContactForm {
         <div class="wrap">
         <h2>Kingcf Options</h2>
         <form method="post" action="options.php">
-            <?php settings_fields('KIngcf_display_options'); ?>
-            <?php do_settings_sections('KIngcf_display_options'); ?>
+            <?php settings_fields('Kingcf_display_options'); ?>
+            <?php do_settings_sections('Kingcf_display_options'); ?>
             <?php submit_button(); ?>
         </form>
         </div>
@@ -81,11 +81,18 @@ class CustomContactForm {
     public function Kingcf_validate_options($input){
         $output = array();
     $output['enable'] = (isset($input['enable']) && $input['enable'] == 1) ? 1 : 0;
+    return $output;
     }
     public function Kingcf_enable_callback(){
-        $options = get_option('KIngcf_display_options');
-    echo '<input type="checkbox" id="Kingcf_enable" name="KIngcf_display_options[enable]" value="1" ' . checked(1, $options['enable'], false) . ' />';
+        // Get the options, or set default values if not set
+        $options = get_option('Kingcf_display_options', array('enable' => 0));
+        // Use isset to check if the 'enable' key exists in the options array
+        $checked = isset($options['enable']) && $options['enable'] == 1 ? 'checked="checked"' : '';
+    
+        // Output the checkbox input
+        echo '<input type="checkbox" id="Kingcf_enable" name="Kingcf_display_options[enable]" value="1" ' . $checked . ' />';
     }
+    
     public function render_contact_form() {
         ob_start(); ?>
         <form id="custom-contact-form" method="post">
@@ -138,8 +145,9 @@ class CustomContactForm {
     }
     // Define the callback function for the filter
 function custom_content_filter($content) {
+    $options = get_option('Kingcf_display_options'); 
     // Check if the current post type is 'post'
-    if (is_singular('post')) {
+    if ($options['enable'] && is_singular()) {
         // Modify the content only for single post pages
         $modified_content = $content . $this->render_contact_form();
         return $modified_content;
